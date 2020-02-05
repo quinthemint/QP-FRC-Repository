@@ -7,10 +7,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Spark;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,58 +26,38 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
 
-   private Spark leftMotor1 = new Spark(0);
-   private Spark leftMotor2 = new Spark(1);
-   private Spark rightMotor1 = new Spark(2);
-   private Spark rightMotor2 = new Spark(3);
-   
-   private Joystick joy1 =  new Joystick(0);
+  private TalonSRX  wheelMotor = new TalonSRX(0);
 
-   private double startTime;
+  private final double kWheelTick2Deg = 1.0 / 4096 * 6 * Math.PI / 12;
+  
   @Override
   public void robotInit() {
+    wheelMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,10);
+
+    wheelMotor.setSelectedSensorPosition(0,0,10);
+
+  }
+
+ @Override
+  public void robotPeriodic() {
+    SmartDashboard.putNumber("Wheel Encoder Value", wheelMotor.getSelectedSensorPosition() * kWheelTick2Deg);
   }
 
   @Override
   public void autonomousInit() {
-    startTime = Timer.getFPGATimestamp();
   }
 
   @Override
   public void autonomousPeriodic() {
-    double time = Timer.getFPGATimestamp();
-
-    if (time - startTime < 3) {
-    leftMotor1.set(0.6);
-    leftMotor2.set(0.6);
-    rightMotor1.set(-0.6);
-    rightMotor2.set(-0.6);
-  } else {
-    leftMotor1.set(0);
-    leftMotor2.set(0);
-    rightMotor1.set(-0);
-    rightMotor2.set(-0);
   }
-}
-
 
   @Override
   public void teleopInit() {
-    
+
   }
 
   @Override
   public void teleopPeriodic() {
-    double speed = -joy1.getRawAxis(1) * 1;
-    double turn = joy1.getRawAxis(4) * 1;
-
-    double left = speed + turn;
-    double right = speed - turn;
-
-    leftMotor1.set(left);
-    leftMotor2.set(left);
-    rightMotor1.set(-right);
-    rightMotor2.set(-right);
   }
 
   @Override

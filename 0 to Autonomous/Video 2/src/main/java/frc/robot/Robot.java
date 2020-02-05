@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -121,9 +120,11 @@ public class Robot extends TimedRobot {
     double distance = (leftPosition + rightPostition) / 2;
 
     if (distance < 10) {
-      drive.tankDrive(0.6, 0.6);
+      leftMaster.set(ControlMode.PercentOutput , 0.6);
+      rightMaster.set(ControlMode.PercentOutput, 0.6);
     }else{
-      drive.tankDrive(0,0);
+      leftMaster.set(ControlMode.PercentOutput , 0);
+      rightMaster.set(ControlMode.PercentOutput , 0);
     }
   }
 

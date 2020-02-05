@@ -7,10 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,59 +21,24 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
-
-   private Spark leftMotor1 = new Spark(0);
-   private Spark leftMotor2 = new Spark(1);
-   private Spark rightMotor1 = new Spark(2);
-   private Spark rightMotor2 = new Spark(3);
-   
-   private Joystick joy1 =  new Joystick(0);
-
-   private double startTime;
   @Override
   public void robotInit() {
   }
 
   @Override
   public void autonomousInit() {
-    startTime = Timer.getFPGATimestamp();
   }
 
   @Override
   public void autonomousPeriodic() {
-    double time = Timer.getFPGATimestamp();
-
-    if (time - startTime < 3) {
-    leftMotor1.set(0.6);
-    leftMotor2.set(0.6);
-    rightMotor1.set(-0.6);
-    rightMotor2.set(-0.6);
-  } else {
-    leftMotor1.set(0);
-    leftMotor2.set(0);
-    rightMotor1.set(-0);
-    rightMotor2.set(-0);
   }
-}
-
 
   @Override
   public void teleopInit() {
-    
   }
 
   @Override
   public void teleopPeriodic() {
-    double speed = -joy1.getRawAxis(1) * 1;
-    double turn = joy1.getRawAxis(4) * 1;
-
-    double left = speed + turn;
-    double right = speed - turn;
-
-    leftMotor1.set(left);
-    leftMotor2.set(left);
-    rightMotor1.set(-right);
-    rightMotor2.set(-right);
   }
 
   @Override
