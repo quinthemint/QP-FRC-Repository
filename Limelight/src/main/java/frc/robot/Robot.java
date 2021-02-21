@@ -7,11 +7,11 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,22 +26,28 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
 
-  private TalonSRX  wheelMotor = new TalonSRX(0);
-
-  private final double kWheelTick2Deg = 1.0 / 4096 * 6 * Math.PI / 12;
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
+  NetworkTableEntry ta = table.getEntry("ta");
   
   @Override
   public void robotInit() {
-    wheelMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,10);
-
-    wheelMotor.setSelectedSensorPosition(0,0,10);
 
   }
 
  @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Wheel Encoder Value", wheelMotor.getSelectedSensorPosition() * kWheelTick2Deg);
-  }
+
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
+
+    SmartDashboard.putNumber("LimelightX", x);
+SmartDashboard.putNumber("LimelightY", y);
+SmartDashboard.putNumber("LimelightArea", area);
+
+    }
 
   @Override
   public void autonomousInit() {
